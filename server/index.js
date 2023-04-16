@@ -22,6 +22,10 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.json({ msg: "Yo! this works" });
+});
+
 app.use("/api/v1/auth", authRouters);
 
 app.use("/api/v1/todos", todoRouters);

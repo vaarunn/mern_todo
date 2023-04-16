@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
+import { Toaster } from "react-hot-toast";
+import Login from "./pages/Login";
+import Todos from "./pages/Todos";
+import { UserContext } from "./context/AuthContext";
+import { instance } from "./utils/axios";
+import { useEffect } from "react";
+import Quotes from "./pages/Quotes";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { setUser, setIsAuthenticated } = UserContext();
+
+  const getUserInfo = async () => {
+    try {
+      const { data } = await instance("/api/v1/auth/me");
+      setUser(data.userData.name);
+      setIsAuthenticated(true);
+      // console.log(data.userData.name);
+    } catch (error) {
+      setUser("");
+      setIsAuthenticated(false);
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/quotes" element={<Quotes />} />
+        <Route path="/" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/todos" element={<Todos />} />
+      </Routes>
+      <Toaster />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
+
+//https://mern-todo-backend-w1eq.onrender.com
