@@ -88,7 +88,7 @@ const Login = () => {
             </button>
             <p>
               Don't have an account?{" "}
-              <Link className="text-[#0d99ff]" to="/register">
+              <Link className="text-[#0d99ff]" to="/">
                 Register
               </Link>
             </p>

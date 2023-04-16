@@ -33,12 +33,12 @@ const Register = () => {
       }
       // console.log(data.msg);
 
+      setLoading(false);
       setIsAuthenticated(true);
       toast.success(data.msg);
-      setLoading(false);
     } catch (error) {
-      toast.error(error.message);
       setLoading(false);
+      toast.error(error.message);
     }
   };
 
